@@ -1,2 +1,2 @@
 # merp
-An Openlayers and AngularJS mapping application framework
+An Openlayers and AngularJS mapping application framework.
