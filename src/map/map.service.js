@@ -4,13 +4,15 @@
     angular.module('merp')
         .factory('mapService', mapService);
 
-    function mapService() {
+    function mapService(promiseUtilService) {
 
         var maps = {};
         var mapOrder = [];
+        var getMapPromises = {};
 
         return {
-            createMap: createMap
+            createMap: createMap,
+            getMap: getMap
         };
 
         /*****/
@@ -33,7 +35,15 @@
             maps[mapName] = map;
             mapOrder.push(map);
 
+            promiseUtilService.resolvePromisesByKey(mapName, map, getMapPromises);
+
             return map;
+        }
+
+        function getMap(mapName) {
+            mapName = mapName || 'default';
+
+            return promiseUtilService.getKeyFromCollectionObject(mapName, maps, getMapPromises);
         }
     }
 

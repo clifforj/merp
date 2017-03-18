@@ -24,19 +24,22 @@
         };
     }
 
-    function MerpController($scope, mapService, ol) {
+    function MerpController($scope, mapService, ol, sourceService) {
         $scope.defaultControls = $scope.defaultControls === 'true';
 
         var map = mapService.createMap($scope.mapName, $scope.defaultControls);
 
-        map.addLayer(new ol.layer.Tile({
-            source: new ol.source.OSM()
-        }));
+        sourceService.getSource('osm').then(function(source) {
+            map.addLayer(new ol.layer.Tile({
+                source: source
+            }));
 
-        map.setView(new ol.View({
-            center: [0, 0],
-            zoom: 2
-        }));
+            map.setView(new ol.View({
+                center: [0, 0],
+                zoom: 2
+            }));
+        });
+
     }
 
 })(window.angular);
