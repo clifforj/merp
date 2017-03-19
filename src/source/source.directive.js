@@ -14,7 +14,7 @@
         };
     }
 
-    function MSourceController($scope, sourceService) {
+    function MSourceController($scope, sourceService, ol) {
         if($scope.sourceName) {
             sourceService.addSource($scope.sourceName, new ol.source.OSM());
         }

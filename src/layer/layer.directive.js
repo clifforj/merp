@@ -8,16 +8,24 @@
         return {
             restrict: 'E',
             scope: {
-                name: '@',
-                source: '@',
+                layerName: '@',
+                sourceName: '@',
                 style: '@'
             },
             controller: MLayerController
         };
     }
 
-    function MLayerController($scope) {
+    function MLayerController($scope, sourceService, layerService, ol) {
+        if($scope.layerName) {
+            sourceService.getSource($scope.sourceName).then(function (source) {
+                var layer = new ol.layer.Tile({
+                    source: source
+                });
 
+                layerService.addLayer('OSM', layer);
+            });
+        }
     }
 
 })(window.angular);
