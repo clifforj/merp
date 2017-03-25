@@ -17,6 +17,7 @@
                 if(!attributes.mapName) {
                     attributes.mapName = 'default';
                 }
+                attributes.defaultControls = attributes.defaultControls === 'true';
                 element.attr('id', attributes.mapName);
             },
             controller: MerpController,
@@ -25,8 +26,6 @@
     }
 
     function MerpController($scope, mapService, ol) {
-        $scope.defaultControls = $scope.defaultControls === 'true';
-
         var map = mapService.createMap($scope.mapName, $scope.defaultControls);
 
         map.setView(new ol.View({
