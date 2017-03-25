@@ -23,7 +23,7 @@
                     source: source
                 });
 
-                layerService.addLayer('OSM', layer);
+                layerService.addLayer($scope.layerName, layer);
             });
         }
     }

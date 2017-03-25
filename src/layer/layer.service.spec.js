@@ -56,5 +56,5 @@ describe('layer service', function() {
         it('should return undefined when no layerName is specified', function () {
            expect(layerService.getLayer()).toBeUndefined();
         });
-    })
+    });
 });

@@ -11,7 +11,8 @@
 
         return {
             addSource: addSource,
-            getSource: getSource
+            getSource: getSource,
+            getSources: getSources
         };
 
         /*****/
@@ -30,6 +31,10 @@
             if(sourceName) {
                 return promiseUtilService.getKeyFromCollectionObject(sourceName, sources, getSourcePromises);
             }
+        }
+
+        function getSources() {
+            return sources;
         }
     }
 
