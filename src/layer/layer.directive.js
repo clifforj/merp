@@ -9,6 +9,7 @@
             restrict: 'E',
             scope: {
                 layerName: '@',
+                layerType: '@',
                 sourceName: '@',
                 style: '@'
             },
@@ -17,15 +18,43 @@
     }
 
     function MLayerController($scope, sourceService, layerService, ol) {
-        if($scope.layerName) {
+        var vm = this;
+
+        initialise();
+
+        /*****/
+
+        function initialise() {
+            if($scope.layerName) {
+                if($scope.layerType) {
+                    switch($scope.layerType) {
+                        case 'vector':
+                            createVectorLayer();
+                            break;
+                    }
+                } else {
+                    sourceService.getSource($scope.sourceName).then(function (source) {
+                        var layer = new ol.layer.Tile({
+                            source: source
+                        });
+
+                        layerService.addLayer($scope.layerName, layer);
+                    });
+                }
+
+            }
+        }
+
+        function createVectorLayer() {
             sourceService.getSource($scope.sourceName).then(function (source) {
-                var layer = new ol.layer.Tile({
+                var layer = new ol.layer.Vector({
                     source: source
                 });
 
                 layerService.addLayer($scope.layerName, layer);
             });
         }
+
     }
 
 })(window.angular);

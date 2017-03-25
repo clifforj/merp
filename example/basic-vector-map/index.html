@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="merp">
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Vector Map</title>
+
+    <link rel="stylesheet" href="/node_modules/openlayers/dist/ol-debug.css">
+    <link rel="stylesheet" href="/dist/app.min.css">
+
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/node_modules/openlayers/dist/ol-debug.js"></script>
+
+    <script src="/dist/merp.min.js"></script>
+    <script src="/dist/merp-templates.min.js"></script>
+</head>
+<body>
+    <merp default-controls="true">
+        <m-layer layer-name="osm" source-name="osm"></m-layer>
+        <m-layer layer-name="world" layer-type="vector" source-name="world"></m-layer>
+
+        <m-source source-name="osm"></m-source>
+        <m-source source-name="world" source-type="vector" source-url="/test-data/json/world.json"></m-source>
+    </merp>
+</body>
+</html>
