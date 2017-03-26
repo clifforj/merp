@@ -17,8 +17,10 @@
         };
     }
 
-    function MLayerController($scope, sourceService, layerService, ol) {
+    function MLayerController($scope, sourceService, layerService, ol, $q) {
         var vm = this;
+
+        vm.readyPromises = [];
 
         initialise();
 
@@ -26,32 +28,43 @@
 
         function initialise() {
             if($scope.layerName) {
-                if($scope.layerType) {
-                    switch($scope.layerType) {
-                        case 'vector':
-                            createVectorLayer();
-                            break;
-                    }
-                } else {
-                    sourceService.getSource($scope.sourceName).then(function (source) {
-                        var layer = new ol.layer.Tile({
-                            source: source
-                        });
 
-                        layerService.addLayer($scope.layerName, layer);
-                    });
+                if($scope.sourceName) {
+                    vm.readyPromises.push(waitForSource());
                 }
+                $q.all(vm.readyPromises).then(createLayer);
+            }
+        }
 
+        function createLayer() {
+            switch($scope.layerType) {
+                case 'tile':
+                    createTileLayer();
+                    break;
+                case 'vector':
+                    createVectorLayer();
             }
         }
 
         function createVectorLayer() {
-            sourceService.getSource($scope.sourceName).then(function (source) {
-                var layer = new ol.layer.Vector({
-                    source: source
-                });
+            var layer = new ol.layer.Vector({
+                source: vm.source
+            });
 
-                layerService.addLayer($scope.layerName, layer);
+            layerService.addLayer($scope.layerName, layer);
+        }
+
+        function createTileLayer() {
+            var layer = new ol.layer.Tile({
+                source: vm.source
+            });
+
+            layerService.addLayer($scope.layerName, layer);
+        }
+
+        function waitForSource() {
+            return sourceService.getSource($scope.sourceName).then(function (source) {
+                vm.source = source;
             });
         }
 

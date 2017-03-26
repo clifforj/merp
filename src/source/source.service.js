@@ -18,13 +18,15 @@
         /*****/
 
         function addSource(sourceName, source) {
-            if(!sources[sourceName]) {
-                sources[sourceName] = source;
+            if(source) {
+                if(!sources[sourceName]) {
+                    sources[sourceName] = source;
+                }
+
+                promiseUtilService.resolvePromisesByKey(sourceName, source, getSourcePromises);
+
+                return source;
             }
-
-            promiseUtilService.resolvePromisesByKey(sourceName, source, getSourcePromises);
-
-            return source;
         }
 
         function getSource(sourceName) {

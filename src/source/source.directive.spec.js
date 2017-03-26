@@ -20,6 +20,18 @@ describe('source directive', function() {
         expect(sourceService.addSource.calls.mostRecent().args[0]).toMatch('mySource');
     });
 
+    it('should attempt to add a vector source if a url is specified', function () {
+        source = $compile(angular.element('<m-source source-name="mySource" source-type="vector"></m-source>'))(scope);
+        scope.$digest();
+
+        expect(sourceService.addSource.calls.mostRecent().args[1]).toBeUndefined();
+
+        source = $compile(angular.element('<m-source source-name="mySource" source-type="vector" source-url="blah"></m-source>'))(scope);
+        scope.$digest();
+
+        expect(sourceService.addSource.calls.mostRecent().args[1] instanceof ol.source.Vector).toBeTruthy();
+    });
+
     it('should not attempt to add a layer with no name', function () {
         $compile(angular.element('<m-source></m-source>'))(scope);
         scope.$digest();
